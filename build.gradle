@@ -24,13 +24,12 @@ repositories {
     mavenCentral()
 }
 
-List compileAll = [ "org.apache.ant:ant:1.8.1", "junit:junit:4.0", "log4j:log4j:1.2.16",
-                    "org.apache.ant:ant-jsch:1.8.1", "org.apache.ant:ant:1.8.1", "org.apache.ant:ant-launcher:1.8.1"]
+List compileAll = [ "junit:junit:4.0", "log4j:log4j:1.2.16", "org.apache.ant:ant-jsch:1.8.4"]
 
 dependencies {
     groovy group: 'org.codehaus.groovy', name: 'groovy', version: '1.7.10'
     compile compileAll
-    runtime fileTree(dir: 'build/classes')
+    runtime compileAll
 }
 
 tasks.withType(Compile) {
@@ -40,8 +39,8 @@ tasks.withType(Compile) {
 task run << {
     String[] pathToFolderOfScript = ['./src/main/groovy/org/pm/']
     def gse = new GroovyScriptEngine(pathToFolderOfScript)
-    gse.groovyClassLoader.addClasspath('./build/classes/main')
-
+    gse.groovyClassLoader.addClasspath('build/classes/main')
+    configurations.runtime.each { File file -> gse.getGroovyClassLoader().addClasspath(file.getAbsolutePath()) }
     gse.run('Glucose.groovy', new Binding())
 }
 

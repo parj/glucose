@@ -22,7 +22,7 @@ http://opensource.org/licenses/mit-license.php
 package org.pm
 
 import org.apache.log4j.Logger
-import org.pm.environments.IEnvironment
+import org.apache.tools.ant.taskdefs.optional.ssh.SSHExec
 
 class Utilities {
 	static environment;
@@ -30,23 +30,30 @@ class Utilities {
 	
 	static void runCommand(command) {
 		logger.trace("runCommand(" + command + ")")
-		
-		def ant = new AntBuilder()
-		
+
+		SSHExec ssh = new SSHExec()
+        ssh.setTrust(true)
+        try {
+            ssh.setOutput(new File("output.log"))
+        } catch(IOException err) {
+            logger.error("Unable to write to output.log")
+        }
+
 		for (host in environment.hosts) {
 			logger.debug("About to run on " + environment.user + "@" + host + " \"" + command + "\"")
-			
-			ant.sshexec(host:host,
-				keyfile:environment.keyFile,
-				username:environment.user,
-				command:command)
-			
+
+            ssh.setKnownhosts(host)
+            ssh.setCommand(command)
+            ssh.setHost(host)
+            ssh.setKeyfile(environment.keyFile)
+            ssh.setUsername(environment.user)
+			ssh.execute()
+
 			logger.debug("Completed run on " + host)
 		}
 	}
 	
 	static void uptime() {
-        logger.info("Running uptime")
 		runCommand("uptime")
 	}
 }

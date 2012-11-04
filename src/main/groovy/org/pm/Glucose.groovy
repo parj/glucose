@@ -42,11 +42,9 @@ class Glucose {
 		
 		
         String environmentName = System.getProperty("env")
-        System.out.println("environmentName - " + environmentName)
         logger.debug("environmentName - " + environmentName)
 
         String classFunctionName = System.getProperty("task")
-        System.out.println("classFunctionName - " + classFunctionName)
 		logger.trace("classFunctionName - " + classFunctionName)
 		
 		//Split the name of class and function
