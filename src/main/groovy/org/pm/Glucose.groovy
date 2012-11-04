@@ -35,8 +35,9 @@ class Glucose {
 		if (System.getProperty("env") == null || System.getProperty("task") == null ||
             System.getProperty("env").length() == 0 || System.getProperty("task").length() == 0) {
 			System.out.println ("Missing command. To use - ");
-			System.out.println ("gradle run -Denv=server_local -Dtask=Utilities.uptime");
-			System.out.println ("gradle run -Denv=local -Dtask=Utilities.runCommand \"ls\" ");
+			System.out.println ("gradle run -Denv=local -Dtask=Utilities.uptime");
+			System.out.println ("gradle run -Denv=local -Dtask=Utilities.runCommand -Dargs=\"ls\" ");
+            System.out.println ("gradle run -Denv=local -Dtask=Utilities.runCommand -Dargs=\"ps -ef | grep `whoami`\" ");
 			System.exit(1)
 		}
 		

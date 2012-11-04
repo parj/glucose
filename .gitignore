@@ -1,6 +1,15 @@
+#Gradle
 .gradle/
 build/
 out/
+
+#App
 output.log
+
+#OS
 .DS_Store
+thumbs.db
+
+#Idea
 .idea/
+lib/
